@@ -1,0 +1,27 @@
+map:
+  size: [20, 20]             # in meters
+  resolution: 20             # cells per meter
+  prob_occ: 0.7              # probability of occupancy for hits
+  log_odds_min: -5.0         # minimum log-odds
+  log_odds_max: 5.0          # maximum log-odds
+  origin: [10, 10]           # meters offset for map center
+
+laser:
+  max_range: 3.5             # maximum range of laser in meters
+  min_angle: -1.5708         # -π/2 radians
+  max_angle: 1.5708          # π/2 radians
+  num_readings: 360          # number of LDS-01 readings
+
+plot:
+  plot_output_filename: "output/final_map.png"
+  liveplot_speed: 0.01
+  robot_color: "blue"
+  lidar_color: "red"
+  lidar_alpha: 0.3
+  show_trail: True           # whether to show robot path
+  trail_length: 100          # number of poses to show
+
+ros:
+  scan_topic: "/scan"
+  odom_topic: "/odom"
+  rate: 10                   # processing rate in Hz
