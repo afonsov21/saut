@@ -1,0 +1,1 @@
+# Primeiro ter um terminal com o roscore a correr, depois correr o micro_simulator.py e depois o main.py (em simultâneo)

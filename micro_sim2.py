@@ -82,15 +82,8 @@ class RobotSimulator:
         self.ogrid = OccupancyGrid(MAP_WIDTH / 100, MAP_HEIGHT / 100, GRID_RESOLUTION)
         self.running = True
         self.obstacles = [
-            # Borders
-            {"x": 0, "y": 0, "width": MAP_WIDTH, "height": 20},
-            {"x": 0, "y": 0, "width": 20, "height": MAP_HEIGHT},
-            {"x": MAP_WIDTH-20, "y": 0, "width": 20, "height": MAP_HEIGHT},
-            {"x": 0, "y": MAP_HEIGHT-20, "width": MAP_WIDTH, "height": 20},
-            # Boxes
-            {"x": 200, "y": 150, "width": 50, "height": 50},
-            {"x": 400, "y": 300, "width": 80, "height": 30},
-            {"x": 600, "y": 200, "width": 40, "height": 100},
+            {"x": 200, "y": 150, "width": 50, "height": 50},  # Example obstacle
+            # Add more obstacles as needed
         ]
 
     def simulate_lidar(self):

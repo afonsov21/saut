@@ -79,6 +79,20 @@ class MicroSimulator:
                     closest_dist = dist
         
         return closest_dist + np.random.normal(0, 0.02)  # Add small noise
+    
+    def check_collision(self, new_x, new_y):
+            """Check if the robot's new position (new_x, new_y) would collide with a wall."""
+            # Calculate the angle from the current position to the new position
+            angle = math.atan2(new_y - self.y, new_x - self.x) - self.yaw
+
+            # Use raycast to check the distance to the nearest wall in that direction
+            distance_to_wall = self.raycast(angle)
+
+            # Calculate the distance the robot would move
+            distance_to_new_position = math.sqrt((new_x - self.x)**2 + (new_y - self.y)**2)
+
+            # If the distance to the new position is greater than the distance to the wall, it's a collision
+            return distance_to_new_position >= distance_to_wall
 
     def generate_scan(self):
         scan = LaserScan()
@@ -95,35 +109,40 @@ class MicroSimulator:
 
     def generate_odom(self):
         self.sim_time += 0.1
-        
-        # Straight path down corridor with pauses at rooms
-        if self.sim_time < 10:  # First half of corridor
-            self.x = -8 + self.linear_speed * self.sim_time
-            self.y = 0
-            self.yaw = 0
-        elif 10 <= self.sim_time < 12:  # Pause at first room
-            self.x = 2
-            self.y = 0
-            self.yaw = -math.pi/2  # Look into room
-        elif 12 <= self.sim_time < 22:  # Second half
-            self.x = 2 + self.linear_speed * (self.sim_time-12)
-            self.y = 0
-            self.yaw = 0
-        else:  # Loop
-            self.sim_time = 0
 
+        # Update robot's position based on random movement
         odom = Odometry()
         odom.header.stamp = rospy.Time.now()
         odom.header.frame_id = "odom"
         odom.child_frame_id = "base_link"
         odom.pose.pose = Pose(
             Point(self.x, self.y, 0),
-            Quaternion(*quaternion_from_euler(0, 0, self.yaw)))
+            Quaternion(*quaternion_from_euler(0, 0, self.yaw))
+        )
         return odom
 
     def run(self):
         while not rospy.is_shutdown():
-            # Publish data
+           
+            linear_velocity = np.random.uniform(0, 1)  
+            angular_velocity = np.random.uniform(-math.pi/2, math.pi/2) 
+
+            # Update robot's position
+            self.x += linear_velocity * math.cos(self.yaw) / 10.0  
+            self.y += linear_velocity * math.sin(self.yaw) / 10.0
+            self.yaw += angular_velocity / 10.0
+
+            if not self.check_collision(self.x, self.y):
+                # Update robot's position if no collision
+                self.x = self.x
+                self.y = self.y
+            else:
+                # If collision, rotate the robot
+                self.yaw += math.pi / 4  # Rotate 45 degrees to avoid obstacle
+
+            # Keep yaw within [-pi, pi]
+            self.yaw = (self.yaw + math.pi) % (2 * math.pi) - math.pi
+             # Publish data
             self.scan_pub.publish(self.generate_scan())
             self.odom_pub.publish(self.generate_odom())
             

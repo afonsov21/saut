@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from math import cos, sin, pi, log, exp, atan2
+from math import cos, sin, pi, log, exp, atan2, sqrt
 import random
 
 def move_robot_random(robot, grid):
@@ -34,18 +34,15 @@ class Robot:
 
 # Sensor (simples)
 def inverse_range_sensor_model(robot, angle, dist, max_range, cell, l_occ=0.85, l_free=-0.4):
-    """
-    Modelo inverso de sensor para calcular o log-odds de uma célula.
-    """
     # Posição esperada da célula
     cell_x, cell_y = cell
     dx = cell_x - robot.x
     dy = cell_y - robot.y
-    r = (dx**2 + dy**2)**0.5  # Distância da célula ao robô
-    theta = atan2(dy, dx) - robot.theta
+    r = sqrt((dx**2 + dy**2)) # Distância da célula ao robô
+    phi = atan2(dy, dx) - robot.theta
 
     # Verifica se a célula está dentro do campo de visão do sensor
-    if abs(theta - angle) > pi / 4:
+    if abs(phi - angle) > pi / 4:
         return 0  # Fora do campo de visão
 
     # Modelo de probabilidade
@@ -65,9 +62,6 @@ def logodds_to_prob(l):
 
 # Atualiza mapa com log-odds
 def update_map_logodds(logodds_map, robot, readings, max_range=10, l_occ=0.85, l_free=-0.4):
-    """
-    Atualiza o mapa de log-odds usando o modelo inverso de sensor.
-    """
     for angle, dist in readings:
         dx = cos(robot.theta + angle)
         dy = sin(robot.theta + angle)

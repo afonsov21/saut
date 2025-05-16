@@ -5,7 +5,7 @@ import random
 
 class OccupancyGridMapping:
     def __init__(self, map_size=10, resolution=0.1):
-        # Updated LIDAR parameters (based on your specifications)
+        # Updated LIDAR parameters (based on our specifications)
         self.min_range = 0.12  # 120mm minimum range (in meters)
         self.max_range = 3.5    # 3,500mm maximum range (in meters)
         self.angular_res = 1 * (pi/180)  # 1° angular resolution

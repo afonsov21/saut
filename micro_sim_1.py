@@ -75,11 +75,11 @@ class OccupancyGridMapping:
         
         # Check if cell is in sensor FOV
         if abs(phi - angle) > self.beam_width/2:
-            return 0
+            return self.l_0
         
         # Apply inverse sensor model
         if r > min(self.max_range, measurement + self.obstacle_thickness/2):
-            return 0
+            return self.l_0
         
         if measurement < self.max_range and abs(r - measurement) < self.obstacle_thickness/2:
             return self.l_occ - self.l_0
@@ -161,12 +161,11 @@ class OccupancyGridMapping:
         rx, ry = self.world_to_grid(robot_pos[0], robot_pos[1])
         self.ax1.plot(ry, rx, 'ro')  # Red dot for robot
         
-        # Occupancy grid (INVERTED grayscale: white=occupied, black=free)
+        # Occupancy grid (INVERTED grayscale: white=free, black=occuppied)
         prob_map = 1/(1 + np.exp(-self.logodds_map))  # Probability of occupancy
         self.ax2.imshow(prob_map, cmap='binary', vmin=0, vmax=1, origin='lower')
-        self.ax2.set_title("Occupancy Grid Map (White=Occupied)")
+        self.ax2.set_title("Occupancy Grid Map (White=Free)")
         self.ax2.plot(ry, rx, 'ro')  # Red dot for robot
-        
         plt.tight_layout()
         plt.pause(0.05)
     
