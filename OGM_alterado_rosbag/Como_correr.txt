@@ -1,0 +1,3 @@
+Alterar rosbag_path: "/mnt/c/Users/Pedro Coelho/Desktop/SAut_local/Novo_4/RoundTripSlow_17_junho.bag" no config.yaml
+
+Basta ter roscore e correr python3 main.py que ele vai buscar a rosbag e lê.
