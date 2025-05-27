@@ -14,7 +14,7 @@ map:
 
 
 plot:
-  plot_output_filename: "output/final_map.png"
+  plot_output_filename: "output/final_map.pgm"
   liveplot_speed: 0.1
   robot_color: "blue"
   lidar_color: "red"
@@ -26,4 +26,4 @@ ros:
   scan_topic: "/scan"
   odom_topic: "/odom"
   rate: 100                   # processing rate in Hz
-  rosbag_path: "/mnt/c/Users/Pedro Coelho/Desktop/SAut_local/Novo_4/RoundTripSlow_17_junho.bag"
+  rosbag_path: "/home/afonso/Desktop/Saut/rosbag/RoundTrip_30_maio.bag"

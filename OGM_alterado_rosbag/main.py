@@ -93,7 +93,7 @@ if __name__ == '__main__':
         config_path = Path(__file__).parent / 'config.yaml'
 
         # Optional: switch this to True to read from rosbag
-        use_bag = True
+        use_bag = False
         bag_path = str(Path(__file__).parent / 'RoundTripSlow_17_junho.bag')
         
         # Cria a instância da aplicação principal com a configuração carregada
